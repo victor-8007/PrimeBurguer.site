@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prime Burguer - Sapé, PB</title>
+  <link rel="icon" type="image/jpeg" href="https://i.ibb.co/Hpxh868N/Whats-App-Image-2026-05-08-at-10-48-51-AM-1.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <button class="hamburger-btn" onclick="abrirAdmin()" title="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="logo">
+    <img src="https://i.ibb.co/Hpxh868N/Whats-App-Image-2026-05-08-at-10-48-51-AM-1.jpg" alt="Prime Burger Logo">
+  </div>
+  <div class="nav-links">
+    <a onclick="scrollToSection('menu')">Cardápio</a>
+    <a onclick="scrollToSection('sobre')">Sobre</a>
+  </div>
+  <button class="cart-btn" onclick="openCart()">
+    🛒 Carrinho <span class="cart-badge" id="cart-count">0</span>
+  </button>
+</nav>
+
+<!-- BANNER ALTA DEMANDA -->
+<div id="banner-demanda">
+  🔥 Estamos em alta demanda! Os pedidos podem demorar um pouco mais que o normal. Agradecemos sua paciência! 🍔
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-logo">
+    <img src="https://i.ibb.co/Hpxh868N/Whats-App-Image-2026-05-08-at-10-48-51-AM-1.jpg"
+         style="width:150px;height:150px;object-fit:cover;border-radius:50%;border:4px solid #FF6B00;margin-bottom:1rem;box-shadow:0 0 30px rgba(255,107,0,0.4);"
+         alt="Prime Burger Logo">
+  </div>
+  <h1>🍔 PRIME BURGUER</h1>
+  <p style="font-size:1.3rem;color:#fff;font-weight:800">O prime nº1 da cidade!</p>
+  <p style="color:#aaa">O melhor hambúrguer artesanal na brasa da cidade.</p>
+  <div class="badge-local">📍 Sapé, Paraíba</div>
+  <div id="status-badge"></div>
+</div>
+
+<!-- CARDÁPIO -->
+<section id="menu">
+  <div class="section-title">🍔 CARDÁPIO</div>
+  <div class="menu-cats">
+    <button class="cat-btn active" onclick="filterCat('todos',this)">Todos</button>
+    <button class="cat-btn" onclick="filterCat('burgers',this)">Hambúrgueres</button>
+    <button class="cat-btn" onclick="filterCat('combos',this)">Combos</button>
+    <button class="cat-btn" onclick="filterCat('petiscos',this)">Petiscos</button>
+    <button class="cat-btn" onclick="filterCat('bebidas',this)">Bebidas</button>
+    <button class="cat-btn" onclick="filterCat('sobremesas',this)">Sobremesas</button>
+  </div>
+  <div class="menu-grid" id="menu-grid"></div>
+</section>
+
+<!-- ADICIONAIS -->
+<div class="adicionais-section">
+  <div class="section-title">➕ ADICIONAIS</div>
+  <div class="adicionais-grid" id="adicionais-grid"></div>
+  <p style="color:#555;font-size:0.8rem;margin-top:1rem">* Clique no adicional para adicionar ao carrinho.</p>
+</div>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="section-title">⚡ SOBRE NÓS</div>
+  <div class="sobre-grid">
+    <div class="sobre-card"><div class="icon">🔥</div><h4>Carne 100% Bovina</h4><p>Blend especial grelhado na hora para você</p></div>
+    <div class="sobre-card"><div class="icon">🚀</div><h4>Entrega Rápida</h4><p>Chegamos até você em Sapé com agilidade</p></div>
+    <div class="sobre-card"><div class="icon">💳</div><h4>Pague pelo Site</h4><p>PIX na hora, simples e seguro</p></div>
+    <div class="sobre-card"><div class="icon">🕐</div><h4>Horário</h4><p id="horario-texto">Seg, Ter, Qui, Sex, Sáb e Dom: 18:30 — 23:00</p></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong><span>PRIME BURGUER</span></strong> — Sapé, Paraíba 🍔<br>
+  <a href="https://instagram.com/prime_burger10" target="_blank" style="color:#FF6B00;text-decoration:none;font-weight:700">📸 @prime_burger10</a><br>
+  <span>Todos os direitos reservados</span><br>
+  <span style="color:#222;font-size:0.7rem;cursor:default;user-select:none" onclick="clickFooter()" id="footer-secret">.</span>
+</footer>
+
+<!-- POPUP BOAS VINDAS -->
+<div id="boas-vindas" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:99998;align-items:center;justify-content:center">
+  <div style="background:#1a1a1a;border:2px solid var(--laranja);border-radius:20px;padding:2rem;max-width:320px;width:90%;text-align:center;animation:zoomIn 0.4s ease">
+    <img src="https://i.ibb.co/Hpxh868N/Whats-App-Image-2026-05-08-at-10-48-51-AM-1.jpg" style="width:90px;height:90px;border-radius:50%;border:3px solid var(--laranja);margin-bottom:1rem" alt="Logo">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--laranja);margin-bottom:0.3rem">Bem-vindo! 🍔</div>
+    <p style="color:#ccc;font-size:0.95rem;margin-bottom:0.5rem">Seja bem-vindo à <strong style="color:#fff">Prime Burguer</strong>!</p>
+    <p style="color:#aaa;font-size:0.85rem;margin-bottom:1.2rem">O melhor hambúrguer artesanal na brasa da cidade. 🔥<br>Fazemos entrega em toda a cidade!</p>
+    <div id="bv-horario" style="font-size:0.85rem;font-weight:800;padding:6px 14px;border-radius:20px;display:inline-block;margin-bottom:1.2rem"></div>
+    <button onclick="fecharBoasVindas()" style="width:100%;background:var(--laranja);color:#fff;border:none;padding:12px;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:1px;cursor:pointer">VER CARDÁPIO 🍔</button>
+  </div>
+</div>
+
+<!-- BOTÃO VOLTAR AO TOPO -->
+<div id="btn-topo" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+  style="display:none;position:fixed;bottom:20px;left:20px;width:46px;height:46px;background:#1a1a1a;border:2px solid var(--laranja);border-radius:50%;align-items:center;justify-content:center;cursor:pointer;z-index:99999;font-size:1.2rem;box-shadow:0 4px 15px rgba(0,0,0,0.4)">⬆️</div>
+
+<!-- BOTÃO WHATSAPP FLUTUANTE -->
+<a href="https://wa.me/5583994137234" target="_blank"
+  style="position:fixed;bottom:140px;right:20px;width:52px;height:52px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:99999;box-shadow:0 4px 15px rgba(37,211,102,0.4);text-decoration:none;font-size:1.6rem;animation:pulse 2s ease-in-out infinite">💬</a>
+
+<!-- BOTÃO INSTAGRAM -->
+<a href="https://instagram.com/prime_burger10" target="_blank"
+  style="position:fixed;bottom:80px;right:20px;width:52px;height:52px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:99999;box-shadow:0 4px 15px rgba(220,39,67,0.4);text-decoration:none;font-size:1.5rem">📸</a>
+
+<!-- PAINEL ADMIN -->
+<div id="admin-overlay" style="display:none;position:fixed;inset:0;background:var(--preto);z-index:500;overflow-y:auto">
+  <div id="admin-login" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem">
+    <div style="background:#1a1a1a;border:2px solid var(--laranja);border-radius:16px;padding:2rem;width:100%;max-width:340px;text-align:center">
+      <img src="https://i.ibb.co/Hpxh868N/Whats-App-Image-2026-05-08-at-10-48-51-AM-1.jpg" style="width:90px;height:90px;border-radius:50%;border:3px solid var(--laranja);margin-bottom:1rem" alt="Logo">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--laranja);margin-bottom:0.2rem">ADMIN</div>
+      <p style="color:#888;font-size:0.85rem;margin-bottom:1.5rem">Painel Prime Burguer</p>
+      <input type="password" id="admin-senha" placeholder="••••" maxlength="10"
+        style="width:100%;background:#111;border:1.5px solid #333;color:#fff;padding:12px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:1.5rem;text-align:center;letter-spacing:6px;outline:none;margin-bottom:1rem">
+      <button onclick="adminLogin()" style="width:100%;background:var(--laranja);color:#fff;border:none;padding:14px;border-radius:10px;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;cursor:pointer">ENTRAR</button>
+      <p id="admin-erro" style="color:#e53935;font-size:0.85rem;margin-top:0.8rem;display:none">❌ Senha incorreta!</p>
+      <button onclick="fecharAdmin()" style="margin-top:1rem;background:transparent;border:none;color:#555;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.85rem">Cancelar</button>
+    </div>
+  </div>
+
+  <div id="admin-painel" style="display:none">
+    <div style="background:var(--preto);border-bottom:3px solid var(--laranja);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:10">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--laranja)">⚙️ ADMIN <span style="color:#fff;font-size:1rem;font-family:'Nunito',sans-serif;font-weight:700">— Prime Burguer</span></div>
+      <button onclick="fecharAdmin()" style="background:transparent;border:1.5px solid #444;color:#aaa;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.85rem">✕ Fechar</button>
+    </div>
+    <div style="padding:1.5rem">
+
+      <!-- ALTA DEMANDA -->
+      <div class="admin-secao">
+        <div class="admin-secao-titulo">🔥 ALTA DEMANDA</div>
+        <p style="color:#666;font-size:0.82rem;margin-bottom:1rem">Ativa um banner vermelho no topo do site avisando os clientes sobre demora nos pedidos.</p>
+        <button id="btn-demanda" class="btn-demanda-on" onclick="toggleAltaDemanda()">🔥 ATIVAR ALTA DEMANDA</button>
+        <p class="status-demanda" id="status-demanda">Inativo — clientes não estão vendo nenhum aviso</p>
+      </div>
+
+      <!-- LOJA ABERTA / FECHADA -->
+      <div class="admin-secao">
+        <div class="admin-secao-titulo">🟢 LOJA ABERTA / FECHADA</div>
+        <p style="color:#666;font-size:0.82rem;margin-bottom:1rem">Controle manual para abrir ou fechar a loja sem mexer no código. Se usar horário normal, vale a regra antiga.</p>
+        <div style="display:flex;gap:.7rem;flex-wrap:wrap">
+          <button class="admin-btn-primary" onclick="salvarStatusLojaAdmin(true)">ABRIR LOJA</button>
+          <button class="admin-btn-danger" onclick="salvarStatusLojaAdmin(false)">FECHAR LOJA</button>
+          <button class="admin-btn-secondary" onclick="usarHorarioNormalAdmin()">USAR HORÁRIO NORMAL</button>
+        </div>
+        <div id="loja-admin-status" style="font-size:.85rem;font-weight:800;margin-top:.8rem"></div>
+      </div>
+
+      <!-- CHAVE PIX -->
+      <div class="admin-secao">
+        <div class="admin-secao-titulo">🔑 CHAVE PIX</div>
+        <p style="color:#666;font-size:0.82rem;margin-bottom:1rem">Essa é a chave mostrada pro cliente na hora de pagar e na mensagem de pedido enviado. Troque quando precisar.</p>
+        <div class="admin-form-grid">
+          <div>
+            <label>Chave PIX</label>
+            <input id="pix-admin-chave" type="text" placeholder="Ex: CNPJ — 64.309.414/0001-80">
+          </div>
+        </div>
+        <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem">
+          <button class="admin-btn-primary" onclick="salvarChavePixAdmin()">SALVAR CHAVE PIX</button>
+        </div>
+        <div id="pix-admin-status" style="font-size:.85rem;font-weight:800;margin-top:.8rem"></div>
+      </div>
+
+      <!-- PRODUTOS ESGOTADOS -->
+      <div class="admin-secao">
+        <div class="admin-secao-titulo">❌ PRODUTOS ESGOTADOS</div>
+        <p style="color:#666;font-size:0.82rem;margin-bottom:1rem">Ative o toggle para marcar um produto como esgotado. Ele aparece bloqueado no cardápio.</p>
+        <div id="admin-lista-produtos"></div>
+      </div>
+
+      <!-- REMOVER ITEM DO CARDÁPIO -->
+      <div class="admin-secao">
+        <div class="admin-secao-titulo">🗑️ REMOVER ITEM DO CARDÁPIO</div>
+        <p style="color:#666;font-size:0.82rem;margin-bottom:1rem">Tire qualquer item do cardápio (hambúrgueres, combos, petiscos, bebidas ou sobremesas). Ele some do site na hora. Pode restaurar quando quiser.</p>
+        <div id="admin-remover-itens-lista"></div>
+        <div id="remover-item-admin-status" style="font-size:.85rem;font-weight:800;margin-top:.8rem"></div>
+      </div>
+
+      <!-- ALTERAR PREÇOS -->
+      <div class="admin-secao">
+        <div class="admin-secao-titulo">💰 ALTERAR PREÇOS</div>
+        <p style="color:#666;font-size:0.82rem;margin-bottom:1rem">Mude o preço de qualquer produto sem editar o arquivo do site. Para voltar ao preço original, clique em restaurar.</p>
+        <div class="admin-form-grid">
+          <div>
+            <label>Produto</label>
+            <select id="preco-admin-produto"></select>
+          </div>
+          <div>
+            <label>Novo preço</label>
+            <input id="preco-admin-valor" type="number" min="0" step="0.01" placeholder="Ex: 25.90">
+          </div>
+        </div>
+        <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem">
+          <button class="admin-btn-primary" onclick="salvarPrecoAdmin()">SALVAR PREÇO</button>
+          <button class="admin-btn-secondary" onclick="restaurarPrecoAdmin()">RESTAURAR ORIGINAL</button>
+        </div>
+        <div id="preco-admin-status"></div>
+        <div class="admin-subtitulo">Preços alterados</div>
+        <div id="admin-precos-lista"></div>
+      </div>
+
+      <!-- EDITAR ADICIONAIS -->
+      <div class="admin-secao">
+        <div class="admin-secao-titulo">➕ EDITAR ADICIONAIS</div>
+        <p style="color:#666;font-size:0.82rem;margin-bottom:1rem">Adicione, mude preço, ative ou desative adicionais que aparecem no cardápio do cliente.</p>
+        <input type="hidden" id="adicional-admin-id">
+        <div class="admin-form-grid">
+          <div>
+            <label>Nome do adicional</label>
+            <input id="adicional-admin-nome" type="text" placeholder="Ex: Bacon extra">
+          </div>
+          <div>
+            <label>Preço</label>
+            <input id="adicional-admin-preco" type="number" min="0" step="0.01" placeholder="Ex: 5.00">
+          </div>
+        </div>
+        <label class="admin-check">
+          <input id="adicional-admin-ativo" type="checkbox" checked>
+          Adicional ativo no cardápio
+        </label>
+        <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem">
+          <button class="admin-btn-primary" onclick="salvarAdicionalAdmin()">SALVAR ADICIONAL</button>
+          <button class="admin-btn-secondary" onclick="limparFormAdicionalAdmin()">LIMPAR</button>
+        </div>
+        <div id="adicional-admin-status"></div>
+        <div class="admin-subtitulo">Adicionais cadastrados</div>
+        <div id="admin-adicionais-lista"></div>
+      </div>
+
+      <!-- PROMOÇÃO RÁPIDA -->
+      <div class="admin-secao">
+        <div class="admin-secao-titulo">⚡ PROMOÇÃO RÁPIDA</div>
+        <p style="color:#666;font-size:0.82rem;margin-bottom:1rem">Escolha um produto e coloque um preço promocional temporário. Depois é só encerrar a promoção.</p>
+        <div class="admin-form-grid">
+          <div>
+            <label>Produto</label>
+            <select id="promo-admin-produto"></select>
+          </div>
+          <div>
+            <label>Preço promocional</label>
+            <input id="promo-admin-preco" type="number" min="0" step="0.01" placeholder="Ex: 19.90">
+          </div>
+          <div style="grid-column:1/-1">
+            <label>Título da promoção</label>
+            <input id="promo-admin-titulo" type="text" placeholder="Ex: Promoção de hoje">
+          </div>
+        </div>
+        <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem">
+          <button class="admin-btn-primary" onclick="salvarPromocaoAdmin()">ATIVAR PROMOÇÃO</button>
+        </div>
+        <div id="promo-admin-status"></div>
+        <div class="admin-subtitulo">Promoções ativas</div>
+        <div id="admin-promocoes-lista"></div>
+      </div>
+
+      <!-- CADASTRAR PRODUTO -->
+      <div class="admin-secao">
+        <div class="admin-secao-titulo">➕ CADASTRAR PRODUTO</div>
+        <p style="color:#666;font-size:0.82rem;margin-bottom:1rem">Cadastre produtos novos no Supabase. Escolha a categoria para aparecer em Hambúrgueres, Combos, Petiscos, Bebidas ou Sobremesas.</p>
+        <input type="hidden" id="produto-admin-id">
+        <div class="admin-form-grid">
+          <div>
+            <label>Nome do produto</label>
+            <input id="produto-admin-nome" type="text" placeholder="Ex: Prime Especial">
+          </div>
+          <div>
+            <label>Preço</label>
+            <input id="produto-admin-preco" type="number" min="0" step="0.01" placeholder="Ex: 25.90">
+          </div>
+          <div>
+            <label>Categoria</label>
+            <select id="produto-admin-categoria">
+              <option value="burgers">Hambúrgueres</option>
+              <option value="combos">Combos</option>
+              <option value="petiscos">Petiscos</option>
+              <option value="bebidas">Bebidas</option>
+              <option value="sobremesas">Sobremesas</option>
+            </select>
+          </div>
+          <div>
+            <label>Número no cardápio</label>
+            <input id="produto-admin-numero" type="text" placeholder="Opcional">
+          </div>
+          <div style="grid-column:1/-1">
+            <label>Descrição</label>
+            <textarea id="produto-admin-desc" placeholder="Ingredientes, tamanho ou observações do produto"></textarea>
+          </div>
+          <div>
+            <label>URL da imagem</label>
+            <input id="produto-admin-img" type="url" placeholder="https://...">
+          </div>
+          <div>
+            <label>Emoji se não tiver imagem</label>
+            <input id="produto-admin-emoji" type="text" maxlength="4" placeholder="🍔">
+          </div>
+        </div>
+        <label class="admin-check">
+          <input id="produto-admin-ativo" type="checkbox" checked>
+          Produto ativo no cardápio
+        </label>
+        <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem">
+          <button class="admin-btn-primary" onclick="salvarProdutoAdmin()">SALVAR PRODUTO</button>
+          <button class="admin-btn-secondary" onclick="limparFormProdutoAdmin()">LIMPAR</button>
+        </div>
+        <div id="produto-admin-status"></div>
+        <div class="admin-subtitulo">Produtos cadastrados no Supabase</div>
+        <div id="admin-produtos-supabase-lista"></div>
+      </div>
+
+      <!-- MENSAGENS RÁPIDAS -->
+      <div class="admin-secao">
+        <div class="admin-secao-titulo">💬 MENSAGENS RÁPIDAS</div>
+        <p style="color:#666;font-size:0.82rem;margin-bottom:1.2rem">Clique, informe o número e nome do cliente — o WhatsApp abre com a mensagem pronta!</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+          <div onclick="msgRapida('confirmado')" class="msg-card-admin">
+            <div style="font-size:1.8rem;margin-bottom:6px">✅</div>
+            <div style="font-weight:800;font-size:0.9rem;margin-bottom:4px">Pedido Confirmado</div>
+            <div style="font-size:0.78rem;color:#888">Avisa que recebeu e está preparando</div>
+          </div>
+          <div onclick="msgRapida('pronto')" class="msg-card-admin">
+            <div style="font-size:1.8rem;margin-bottom:6px">🍔</div>
+            <div style="font-weight:800;font-size:0.9rem;margin-bottom:4px">Pedido Pronto</div>
+            <div style="font-size:0.78rem;color:#888">Avisa que o pedido ficou pronto</div>
+          </div>
+          <div onclick="msgRapida('saiu')" class="msg-card-admin">
+            <div style="font-size:1.8rem;margin-bottom:6px">🛵</div>
+            <div style="font-weight:800;font-size:0.9rem;margin-bottom:4px">Saiu para Entrega</div>
+            <div style="font-size:0.78rem;color:#888">Avisa que o motoboy já saiu</div>
+          </div>
+          <div onclick="msgRapida('atraso')" class="msg-card-admin">
+            <div style="font-size:1.8rem;margin-bottom:6px">⏰</div>
+            <div style="font-weight:800;font-size:0.9rem;margin-bottom:4px">Pequeno Atraso</div>
+            <div style="font-size:0.78rem;color:#888">Avisa que terá um pequeno atraso</div>
+          </div>
+          <div onclick="msgRapida('retirada')" class="msg-card-admin" style="grid-column:1/-1">
+            <div style="font-size:1.8rem;margin-bottom:6px">🏪</div>
+            <div style="font-weight:800;font-size:0.9rem;margin-bottom:4px">Pronto para Retirada</div>
+            <div style="font-size:0.78rem;color:#888">Avisa que pode vir buscar no local</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CARRINHO -->
+<div class="cart-overlay" id="cart-overlay" onclick="overlayClose(event)">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <h2>🛒 Seu Pedido</h2>
+      <button class="close-btn" onclick="closeCart()">✕</button>
+    </div>
+    <div id="cart-items-list"></div>
+    <div class="checkout-section">
+      <label>Nome</label>
+      <input type="text" id="nome" placeholder="Seu nome completo">
+      <label>Telefone (WhatsApp)</label>
+      <input type="tel" id="telefone" placeholder="(83) 99999-9999">
+
+      <label style="margin-bottom:6px;display:block">Tipo de pedido</label>
+      <div class="toggle-group">
+        <div class="toggle-opt active" id="opt-retirada" onclick="setTipo('retirada')">🏪 Retirar</div>
+        <div class="toggle-opt" id="opt-entrega" onclick="setTipo('entrega')">🛵 Entrega</div>
+      </div>
+
+      <div id="retirada-info" style="background:#111;border:1.5px solid #FF6B00;border-radius:8px;padding:10px 14px;margin-bottom:1rem">
+        <div style="color:#FF6B00;font-weight:800;font-size:0.85rem;margin-bottom:4px">📍 Endereço para retirada:</div>
+        <div style="color:#ccc;font-size:0.9rem">R. Júlio Francisco Da Silva, S/N — Planalto Central, Sapé - PB</div>
+        <div style="color:#666;font-size:0.78rem;margin-top:4px">Aguarde a confirmação pelo WhatsApp antes de buscar!</div>
+      </div>
+
+      <div class="address-fields" id="address-fields">
+        <label>Rua / Avenida</label>
+        <input type="text" id="rua" placeholder="Ex: Rua das Flores, 123">
+        <label>Bairro</label>
+        <input type="text" id="bairro" placeholder="Ex: Centro">
+        <label>Ponto de referência</label>
+        <textarea id="ref" placeholder="Ex: Próximo ao mercado X"></textarea>
+      </div>
+
+      <label>Observações / Adicionais</label>
+      <textarea id="obs" placeholder="Ex: Sem cebola, adicionar bacon, ponto da carne..."></textarea>
+
+      <div id="frete-linha"></div>
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="total-val">R$ 0,00</span>
+      </div>
+
+      <label style="margin-top:0.5rem;margin-bottom:6px;display:block">Forma de pagamento</label>
+      <div class="toggle-group">
+        <div class="toggle-opt active" id="opt-pix" onclick="setPagamento('pix')">🔑 PIX</div>
+        <div class="toggle-opt" id="opt-dinheiro" onclick="setPagamento('dinheiro')">💵 Dinheiro</div>
+        <div class="toggle-opt" id="opt-cartao" onclick="setPagamento('cartao')">Cartao</div>
+      </div>
+
+      <div id="pix-info" class="pix-section">
+        <div class="pix-label">Pagamento via PIX</div>
+        <div class="pix-key">🔑 <span id="pix-key-texto">CNPJ — 64.309.414/0001-80</span></div>
+        <button type="button" class="pix-copy-btn" id="pix-copy-btn" onclick="copiarChavePix(this, 'pix-key-texto')">📋 Copiar chave PIX</button>
+        <div style="color:#ccc;font-size:0.85rem">Favorecido: <strong>Prime Burger</strong></div>
+        <div style="color:#666;font-size:0.75rem;margin-top:6px">Envie o comprovante pelo WhatsApp após finalizar</div>
+      </div>
+
+      <div id="dinheiro-info" style="display:none;background:#111;border:1.5px solid #333;border-radius:10px;padding:1rem;margin-bottom:0.5rem">
+        <label>Vai precisar de troco?</label>
+        <div class="toggle-group" style="margin-bottom:0.8rem">
+          <div class="toggle-opt active" id="opt-semtroco" onclick="setTroco(false)">Não preciso</div>
+          <div class="toggle-opt" id="opt-comtroco" onclick="setTroco(true)">Sim, preciso</div>
+        </div>
+        <div id="troco-campo" style="display:none">
+          <label>Troco para quanto?</label>
+          <input type="number" id="troco-val" placeholder="Ex: 50" min="0" style="margin-bottom:0">
+        </div>
+      </div>
+
+      <div id="cartao-info" style="display:none;background:#111;border:1.5px solid #333;border-radius:10px;padding:1rem;margin-bottom:0.5rem;color:#ddd">
+        Pagamento no cartao na entrega/retirada.
+      </div>
+
+      <button class="pedido-btn" id="pedido-btn" onclick="finalizarPedido()">FINALIZAR PEDIDO</button>
+      <a id="wpp-fallback-link" href="#" target="_blank" style="display:none;text-align:center;background:#25D366;color:#111;font-weight:800;padding:0.9rem;border-radius:10px;text-decoration:none;margin-top:0.6rem">📲 TOQUE AQUI PARA ABRIR O WHATSAPP</a>
+      <div class="success-msg" id="success-msg">
+        <h3>✅ Pedido Enviado!</h3>
+        <p>Recebemos seu pedido! Envie o comprovante PIX pelo WhatsApp para confirmarmos. Em breve seu hambúrguer estará a caminho! 🍔🔥</p>
+        <div id="success-pix-info" class="pix-section" style="display:none">
+          <div class="pix-label">Pague com PIX</div>
+          <div class="pix-key">🔑 <span id="success-pix-chave"></span></div>
+          <div style="color:#ccc;font-size:0.85rem">Favorecido: <strong>Prime Burger</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SABOR -->
+<div id="sabor-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:300;align-items:center;justify-content:center">
+  <div style="background:#1a1a1a;border:2px solid #FF6B00;border-radius:16px;padding:1.5rem;width:320px;max-width:90%">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#FF6B00" id="modal-titulo"></h3>
+      <button onclick="fecharModal()" style="background:transparent;border:none;color:#aaa;font-size:1.3rem;cursor:pointer">✕</button>
+    </div>
+    <p style="color:#888;font-size:0.85rem;margin-bottom:1rem">Escolha o sabor:</p>
+    <div id="modal-opcoes"></div>
+  </div>
+</div>
+
+<!-- SCRIPTS (ordem importa!) -->
+<script src="js/utils.js"></script>
+<script src="js/produtos.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/produtos-supabase.js"></script>
+<script src="js/checkout.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

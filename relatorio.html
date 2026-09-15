@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatorio - Prime Burguer</title>
+  <link rel="icon" type="image/jpeg" href="https://i.ibb.co/Hpxh868N/Whats-App-Image-2026-05-08-at-10-48-51-AM-1.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{--laranja:#FF6B00;--preto:#111;--card:#1b1b1f;--borda:#2b2b34;--texto:#fff;--muted:#9a9aaa}
+    body{font-family:'Nunito',sans-serif;background:var(--preto);color:var(--texto);min-height:100vh}
+    .login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .login-box{width:100%;max-width:360px;background:var(--card);border:2px solid var(--laranja);border-radius:14px;padding:28px;text-align:center}
+    .login-box img{width:92px;height:92px;border-radius:50%;object-fit:cover;border:3px solid var(--laranja);margin-bottom:12px}
+    h1,.marca{font-family:'Bebas Neue',sans-serif;letter-spacing:1px}
+    .marca{font-size:32px;color:var(--laranja)}
+    .login-box p{color:var(--muted);font-size:14px;margin:6px 0 18px}
+    input,select{background:#121216;border:1px solid #333440;color:#fff;border-radius:8px;padding:10px 12px;font:inherit;outline:none}
+    input:focus,select:focus{border-color:var(--laranja)}
+    .login-box input{width:100%;font-size:22px;text-align:center;letter-spacing:6px;margin-bottom:12px}
+    button{background:var(--laranja);color:#fff;border:0;border-radius:8px;padding:10px 16px;font-weight:800;cursor:pointer;font:inherit}
+    button.secondary{background:#24242c;color:#d8d8e8;border:1px solid #3a3a46}
+    button.danger{background:#b42318;color:#fff}
+    button.ok{background:#1a7f37;color:#fff}
+    button.mini{padding:7px 10px;font-size:12px;border-radius:7px;white-space:nowrap}
+    .acoes{display:flex;gap:6px;flex-wrap:wrap}
+    nav{height:62px;border-bottom:3px solid var(--laranja);display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:#101014;position:sticky;top:0;z-index:2}
+    nav h1{color:var(--laranja);font-size:28px}
+    main{padding:20px;max-width:1180px;margin:0 auto}
+    .filtros{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin:0 0 18px}
+    .filtros label{display:block;color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;margin-bottom:4px}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:12px;margin-bottom:22px}
+    .card{background:var(--card);border:1px solid var(--borda);border-radius:10px;padding:16px}
+    .card .valor{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--laranja)}
+    .card .label{color:var(--muted);font-size:13px}
+    .titulo{font-family:'Bebas Neue',sans-serif;color:var(--laranja);font-size:28px;margin:22px 0 10px;border-left:4px solid var(--laranja);padding-left:10px}
+    .tabela-wrap{overflow:auto;border:1px solid var(--borda);border-radius:10px;background:#15151b}
+    table{width:100%;border-collapse:collapse;font-size:14px;min-width:920px}
+    th{color:var(--laranja);background:#1d1d24;text-align:left;padding:11px;text-transform:uppercase;font-size:12px}
+    td{padding:11px;border-top:1px solid #282832;color:#ddd;vertical-align:top}
+    tr:hover td{background:#1b1b22}
+    .badge{display:inline-block;padding:3px 8px;border-radius:999px;font-weight:800;font-size:12px}
+    .pendente{background:#f5a62322;color:#f5a623}.preparando{background:#2196f322;color:#2196f3}.pronto{background:#4caf5022;color:#4caf50}.entregue{background:#6663;color:#aaa}
+    .muted{color:var(--muted)}
+    .erro{display:none;color:#ff6b6b;font-size:14px;margin-top:10px}
+    .empty{text-align:center;color:#777;padding:24px}
+    @media(max-width:760px){nav h1{font-size:22px}.grid{grid-template-columns:repeat(2,1fr)}main{padding:14px}.filtros>*{width:100%}.filtros button{width:100%}}
+  </style>
+</head>
+<body>
+  <section class="login" id="login">
+    <div class="login-box">
+      <img src="https://i.ibb.co/Hpxh868N/Whats-App-Image-2026-05-08-at-10-48-51-AM-1.jpg" alt="Prime Burguer">
+      <div class="marca">RELATORIO</div>
+      <p>Prime Burguer - Painel de vendas</p>
+      <input id="senha" type="password" maxlength="10" placeholder="Senha" autofocus>
+      <button onclick="entrar()">ENTRAR</button>
+      <div class="erro" id="erro-login">Senha incorreta ou Supabase nao configurado.</div>
+    </div>
+  </section>
+
+  <section id="painel" style="display:none">
+    <nav>
+      <h1>RELATORIO <span style="color:#fff;font:700 14px 'Nunito',sans-serif">Prime Burguer</span></h1>
+      <button class="secondary" onclick="sair()">Sair</button>
+    </nav>
+    <main>
+      <form class="filtros" onsubmit="event.preventDefault(); carregarRelatorio();">
+        <div>
+          <label>Data inicio</label>
+          <input type="date" id="data-ini">
+        </div>
+        <div>
+          <label>Data fim</label>
+          <input type="date" id="data-fim">
+        </div>
+        <div>
+          <label>Status</label>
+          <select id="status">
+            <option value="todos" selected>Todos</option>
+            <option value="entregue">Entregue</option>
+            <option value="pendente">Pendente</option>
+            <option value="preparando">Preparando</option>
+            <option value="pronto">Pronto</option>
+          </select>
+        </div>
+        <button type="submit">Filtrar</button>
+      </form>
+      <div class="acoes" style="margin:-8px 0 18px">
+        <button type="button" class="secondary" onclick="exportarRelatorioCsv()">Exportar CSV</button>
+        <button type="button" class="secondary" onclick="mostrarFechamentoDia()">Fechamento do dia</button>
+      </div>
+      <div id="fechamento-dia"></div>
+
+      <div class="grid" id="resumo"></div>
+
+      <div class="titulo">Produtos mais vendidos</div>
+      <div class="tabela-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Produto</th><th>Qtd</th><th>Receita</th></tr></thead>
+          <tbody id="produtos"></tbody>
+        </table>
+      </div>
+
+      <div class="titulo">Pedidos do periodo</div>
+      <div class="tabela-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Cliente</th><th>Telefone</th><th>Itens</th><th>Total</th><th>Pagamento</th><th>Status</th><th>Data</th><th>Acoes</th></tr></thead>
+          <tbody id="pedidos"></tbody>
+        </table>
+      </div>
+    </main>
+  </section>
+
+  <script src="js/supabase-config.js"></script>
+  <script>
+    let senhaAtual = sessionStorage.getItem('prime_relatorio_senha') || '';
+    let pedidosAtuais = [];
+    let resumoAtual = {};
+    let produtosAtuais = [];
+    const dinheiro = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const dataBR = v => v ? new Date(v).toLocaleString('pt-BR') : '-';
+
+    function cfgOk() {
+      const cfg = window.PRIME_SUPABASE || {};
+      return cfg.url && cfg.anonKey && !cfg.url.includes('COLE_AQUI') && !cfg.anonKey.includes('COLE_AQUI');
+    }
+
+    async function rpc(nome, body) {
+      const cfg = window.PRIME_SUPABASE;
+      const resp = await fetch(`${cfg.url}/rest/v1/rpc/${nome}`, {
+        method: 'POST',
+        headers: {
+          apikey: cfg.anonKey,
+          Authorization: `Bearer ${cfg.anonKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
+      const json = await resp.json().catch(() => null);
+      if (!resp.ok || !json?.sucesso) throw new Error(json?.erro || 'Erro ao buscar dados');
+      return json;
+    }
+
+    function datasPadrao() {
+      const hoje = new Date();
+      const ano = hoje.getFullYear();
+      const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+      const dia = String(hoje.getDate()).padStart(2, '0');
+      const hojeLocal = `${ano}-${mes}-${dia}`;
+      document.getElementById('data-ini').value = hojeLocal;
+      document.getElementById('data-fim').value = hojeLocal;
+    }
+
+    async function entrar() {
+      senhaAtual = document.getElementById('senha').value.trim();
+      document.getElementById('erro-login').style.display = 'none';
+      if (!senhaAtual || !cfgOk()) {
+        document.getElementById('erro-login').style.display = 'block';
+        return;
+      }
+      sessionStorage.setItem('prime_relatorio_senha', senhaAtual);
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('painel').style.display = 'block';
+      datasPadrao();
+      await carregarRelatorio();
+    }
+
+    function sair() {
+      sessionStorage.removeItem('prime_relatorio_senha');
+      location.reload();
+    }
+
+    async function carregarRelatorio() {
+      const dados = await rpc('relatorio_pedidos', {
+        p_senha: senhaAtual,
+        p_data_ini: document.getElementById('data-ini').value,
+        p_data_fim: document.getElementById('data-fim').value,
+        p_status: document.getElementById('status').value
+      }).catch(err => {
+        alert(err.message);
+        return null;
+      });
+      if (!dados) return;
+      resumoAtual = dados.resumo || {};
+      produtosAtuais = dados.produtos || [];
+      pedidosAtuais = dados.pedidos || [];
+      resumoAtual.cartao_valor = pedidosAtuais
+        .filter(p => p.pagamento === 'cartao')
+        .reduce((s, p) => s + Number(p.total || 0), 0);
+      renderResumo(resumoAtual);
+      renderProdutos(produtosAtuais);
+      renderPedidos(pedidosAtuais);
+    }
+
+    function nomePagamento(valor) {
+      if (valor === 'dinheiro') return 'Dinheiro';
+      if (valor === 'cartao') return 'Cartao';
+      return 'PIX';
+    }
+
+    function renderResumo(r) {
+      const cards = [
+        ['Total de Pedidos', r.total_pedidos || 0],
+        ['Receita Total', dinheiro(r.receita_total)],
+        ['Pedidos Entregues', r.entregues || 0],
+        ['Total em Fretes', dinheiro(r.total_fretes)],
+        ['Recebido via PIX', dinheiro(r.pix_valor)],
+        ['Recebido em Dinheiro', dinheiro(r.dinheiro_valor)],
+        ['Recebido em Cartao', dinheiro(r.cartao_valor)],
+        ['Ticket Medio', dinheiro(r.ticket_medio)],
+        ['Receita sem Fretes', dinheiro(r.receita_sem_frete)]
+      ];
+      document.getElementById('resumo').innerHTML = cards.map(([label, valor]) =>
+        `<div class="card"><div class="valor">${valor}</div><div class="label">${label}</div></div>`
+      ).join('');
+    }
+
+    function renderProdutos(produtos) {
+      document.getElementById('produtos').innerHTML = produtos.length
+        ? produtos.map((p, i) => `<tr><td class="muted">${i + 1}</td><td><strong>${escapeHtml(p.produto)}</strong></td><td>${p.qtd}x</td><td>${dinheiro(p.receita)}</td></tr>`).join('')
+        : '<tr><td colspan="4" class="empty">Nenhum produto vendido no periodo</td></tr>';
+    }
+
+    function renderPedidos(pedidos) {
+      document.getElementById('pedidos').innerHTML = pedidos.length
+        ? pedidos.map(p => `<tr>
+            <td class="muted">#${p.id}</td>
+            <td><strong>${escapeHtml(p.nome)}</strong></td>
+            <td>${escapeHtml(p.telefone)}</td>
+            <td style="white-space:pre-line">${escapeHtml(p.itens || '')}</td>
+            <td><strong style="color:var(--laranja)">${dinheiro(p.total)}</strong></td>
+            <td>${nomePagamento(p.pagamento)}</td>
+            <td><span class="badge ${p.status}">${p.status}</span></td>
+            <td class="muted">${dataBR(p.criado_em)}</td>
+            <td>
+              <div class="acoes">
+                <button class="mini" onclick="imprimirPedido(${p.id})">Imprimir</button>
+                ${p.status !== 'entregue' ? `<button class="mini ok" onclick="marcarEntregue(${p.id})">Entregue</button>` : ''}
+                <button class="mini danger" onclick="excluirPedido(${p.id})">Excluir</button>
+              </div>
+            </td>
+          </tr>`).join('')
+        : '<tr><td colspan="9" class="empty">Nenhum pedido no periodo</td></tr>';
+    }
+
+    function csvCell(valor) {
+      return `"${String(valor ?? '').replace(/"/g, '""')}"`;
+    }
+
+    function baixarArquivo(nome, conteudo, tipo = 'text/csv;charset=utf-8') {
+      const blob = new Blob([conteudo], { type: tipo });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = nome;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportarRelatorioCsv() {
+      if (!pedidosAtuais.length) {
+        alert('Nenhum pedido para exportar.');
+        return;
+      }
+      const linhas = [
+        ['id','cliente','telefone','itens','total','pagamento','status','data'].map(csvCell).join(';'),
+        ...pedidosAtuais.map(p => [
+          p.id,
+          p.nome,
+          p.telefone,
+          String(p.itens || '').replace(/\n/g, ' | '),
+          Number(p.total || 0).toFixed(2).replace('.', ','),
+          p.pagamento,
+          p.status,
+          dataBR(p.criado_em)
+        ].map(csvCell).join(';'))
+      ];
+      const ini = document.getElementById('data-ini').value || 'inicio';
+      const fim = document.getElementById('data-fim').value || 'fim';
+      baixarArquivo(`prime-burguer-relatorio-${ini}-${fim}.csv`, linhas.join('\n'));
+    }
+
+    function mostrarFechamentoDia() {
+      const el = document.getElementById('fechamento-dia');
+      const topProdutos = produtosAtuais.slice(0, 8).map(p =>
+        `<li>${escapeHtml(p.produto)} - ${p.qtd}x - ${dinheiro(p.receita)}</li>`
+      ).join('');
+      el.innerHTML = `
+        <div class="card" style="margin-bottom:18px;border-color:var(--laranja)">
+          <div class="titulo" style="margin-top:0">Fechamento do dia</div>
+          <div class="grid" style="margin-bottom:12px">
+            <div><div class="valor">${resumoAtual.total_pedidos || 0}</div><div class="label">Pedidos</div></div>
+            <div><div class="valor">${dinheiro(resumoAtual.receita_total)}</div><div class="label">Receita total</div></div>
+            <div><div class="valor">${dinheiro(resumoAtual.pix_valor)}</div><div class="label">PIX</div></div>
+            <div><div class="valor">${dinheiro(resumoAtual.dinheiro_valor)}</div><div class="label">Dinheiro</div></div>
+          </div>
+          <div class="muted" style="margin-bottom:6px">Produtos mais vendidos:</div>
+          <ol style="padding-left:20px;color:#ddd">${topProdutos || '<li>Nenhum produto vendido.</li>'}</ol>
+        </div>`;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    async function marcarEntregue(id) {
+      const pedido = pedidosAtuais.find(p => Number(p.id) === Number(id));
+      const nome = pedido ? `#${pedido.id} - ${pedido.nome}` : `#${id}`;
+      if (!confirm(`Marcar o pedido ${nome} como entregue?`)) return;
+
+      try {
+        await rpc('atualizar_status_pedido', {
+          p_senha: senhaAtual,
+          p_pedido_id: id,
+          p_status: 'entregue'
+        });
+        await carregarRelatorio();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    async function excluirPedido(id) {
+      const pedido = pedidosAtuais.find(p => Number(p.id) === Number(id));
+      const nome = pedido ? `#${pedido.id} - ${pedido.nome}` : `#${id}`;
+      if (!confirm(`Excluir o pedido ${nome}? Essa acao nao pode ser desfeita.`)) return;
+
+      try {
+        await rpc('excluir_pedido', {
+          p_senha: senhaAtual,
+          p_pedido_id: id
+        });
+        await carregarRelatorio();
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    function imprimirPedido(id) {
+      const pedido = pedidosAtuais.find(p => Number(p.id) === Number(id));
+      if (!pedido) {
+        alert('Pedido nao encontrado na lista atual.');
+        return;
+      }
+
+      const janela = window.open('', '_blank', 'width=360,height=640');
+      if (!janela) {
+        alert('O navegador bloqueou a janela de impressao. Libere pop-ups para este site.');
+        return;
+      }
+
+      const html = montarCupom58mm(pedido);
+      janela.document.open();
+      janela.document.write(html);
+      janela.document.close();
+      janela.focus();
+      setTimeout(() => janela.print(), 350);
+    }
+
+    function montarCupom58mm(p) {
+      const itens = escapeHtml(p.itens || '').replace(/\n/g, '<br>');
+      const endereco = p.tipo === 'entrega'
+        ? `<div><strong>ENTREGA</strong></div><div>${escapeHtml(p.endereco || '')}</div>`
+        : '<div><strong>RETIRADA NO LOCAL</strong></div>';
+      const obs = p.obs ? `<div class="sep"></div><div><strong>OBS</strong></div><div>${escapeHtml(p.obs)}</div>` : '';
+      const troco = p.troco_para ? `<div>Troco para: ${dinheiro(p.troco_para)}</div>` : '';
+
+      return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedido #${p.id}</title>
+  <style>
+    @page { size: 58mm auto; margin: 0; }
+    * { box-sizing: border-box; }
+    body {
+      width: 58mm;
+      margin: 0;
+      padding: 3mm 2.5mm;
+      color: #000;
+      background: #fff;
+      font-family: "Courier New", monospace;
+      font-size: 10px;
+      line-height: 1.25;
+    }
+    .center { text-align: center; }
+    .title { font-size: 14px; font-weight: 700; }
+    .sep { border-top: 1px dashed #000; margin: 6px 0; }
+    .row { display: flex; justify-content: space-between; gap: 8px; }
+    .total { font-size: 13px; font-weight: 700; }
+    @media print {
+      body { width: 58mm; }
+      button { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="center title">PRIME BURGUER</div>
+  <div class="center">Pedido #${p.id}</div>
+  <div class="center">${dataBR(p.criado_em)}</div>
+  <div class="sep"></div>
+  <div><strong>Cliente:</strong> ${escapeHtml(p.nome)}</div>
+  <div><strong>Telefone:</strong> ${escapeHtml(p.telefone)}</div>
+  ${endereco}
+  <div class="sep"></div>
+  <div><strong>ITENS</strong></div>
+  <div>${itens}</div>
+  ${obs}
+  <div class="sep"></div>
+  <div class="row"><span>Subtotal</span><span>${dinheiro(p.subtotal)}</span></div>
+  <div class="row"><span>Frete</span><span>${dinheiro(p.frete)}</span></div>
+  <div class="row total"><span>Total</span><span>${dinheiro(p.total)}</span></div>
+  <div>Pagamento: ${nomePagamento(p.pagamento)}</div>
+  ${troco}
+  <div class="sep"></div>
+  <div class="center">Obrigado pela preferencia!</div>
+</body>
+</html>`;
+    }
+
+    function escapeHtml(texto) {
+      return String(texto ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+    }
+
+    if (senhaAtual && cfgOk()) {
+      document.getElementById('senha').value = senhaAtual;
+      entrar();
+    }
+  </script>
+</body>
+</html>

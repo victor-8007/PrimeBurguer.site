@@ -1,0 +1,29 @@
+/* ============================================
+   PRIME BURGUER — responsive.css
+============================================ */
+
+/* ── DESKTOP (768px+) ── */
+@media(min-width:768px){
+  nav{padding:0 2.5rem;height:66px}
+  .logo{font-size:2rem;gap:12px}
+  .logo img{height:50px;width:50px}
+  .logo-nome{display:inline!important}
+  .nav-links a{font-size:0.9rem}
+  .nav-links{gap:1.5rem}
+  .cart-btn{font-size:0.95rem;padding:0.5rem 1.3rem}
+}
+
+/* ── MOBILE PEQUENO (max 480px) ── */
+@media(max-width:480px){
+  .menu-grid{grid-template-columns:1fr 1fr;gap:0.8rem}
+  .card-img{height:180px}
+}
+
+/* ── MOBILE MUITO PEQUENO (max 400px) ── */
+@media(max-width:400px){
+  .nav-links{gap:0.7rem}
+  .nav-links a{font-size:0.72rem}
+  .cart-btn{font-size:0.75rem;padding:0.35rem 0.7rem}
+  .logo{font-size:1.3rem}
+  .logo img{height:36px;width:36px}
+}
