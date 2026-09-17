@@ -30,7 +30,7 @@ Agente de impressão térmica (prime-print-agent.ps1) para impressoras 58mm, que
 Edição especial Copa 2026, com combo temático
 
 Tecnologias utilizadas
-
+=
 Frontend: HTML, CSS e JavaScript, hospedado na Netlify
 
 Backend: Supabase (banco de dados e funções serverless)
