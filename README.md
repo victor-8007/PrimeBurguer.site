@@ -1,9 +1,12 @@
 Prime Burguer
+
 Sobre o projeto
+=
 
 O site permite que os clientes montem seus pedidos direto pelo celular ou computador, escolham a forma de pagamento e finalizem a compra via WhatsApp, sem precisar ligar ou esperar atendimento. Do outro lado, a equipe da hamburgueria tem um painel administrativo completo para gerenciar cardápio, acompanhar vendas e controlar a operação do dia a dia.
 
-Funcionalidades
+Funcionalidades:
+=
 Cardápio digital com mais de 40 produtos (burgers, combos, petiscos, bebidas e sobremesas)
 Carrinho de compras com suporte a adicionais em cada item
 Pagamento via PIX ou dinheiro, com exibição dinâmica da chave PIX da loja
