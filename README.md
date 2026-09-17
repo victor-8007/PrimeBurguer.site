@@ -1,8 +1,4 @@
-# PrimeBurguer.site
-Prime Burguer 🍔
-
-Sistema de pedidos online para a Prime Burguer, hamburgueria localizada em Sapé - PB. O projeto foi desenvolvido por Victor e mais 5 amigos, com o objetivo de digitalizar e agilizar o processo de vendas do restaurante, do pedido do cliente até a impressão do comprovante na cozinha.
-
+Prime Burguer
 Sobre o projeto
 
 O site permite que os clientes montem seus pedidos direto pelo celular ou computador, escolham a forma de pagamento e finalizem a compra via WhatsApp, sem precisar ligar ou esperar atendimento. Do outro lado, a equipe da hamburgueria tem um painel administrativo completo para gerenciar cardápio, acompanhar vendas e controlar a operação do dia a dia.
@@ -30,9 +26,5 @@ O projeto teve uma duração total de 10 meses. Nos primeiros três meses (dezem
 
 Na parte técnica, o projeto começou com testes em ambientes locais (XAMPP) e hospedagens gratuitas (InfinityFree), que se mostraram limitados para as necessidades do sistema. A solução final migrou para Supabase + Netlify, garantindo mais estabilidade, escalabilidade e facilidade de manutenção.
 
-Ao longo do desenvolvimento, diversas melhorias foram feitas com base no uso real do restaurante, como:
-
-Correção de bugs na duplicação de pedidos causados por bloqueios de navegadores mobile
-Ajustes no agente de impressão para evitar falhas silenciosas
 Correções na identificação da forma de pagamento (PIX x cartão) no banco de dados
 Melhorias de usabilidade no checkout e no painel de relatórios
