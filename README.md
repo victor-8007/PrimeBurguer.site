@@ -39,8 +39,8 @@ Impressão local: script em PowerShell para comunicação com impressoras térmi
 
 Pedidos: integração direta com WhatsApp
 
-Histórico
-
+Histórico:
+=
 
 O projeto teve uma duração total de 10 meses. Nos primeiros três meses (dezembro, janeiro e fevereiro), o grupo se dedicou a estudar e aprender tecnologia, já que 
 todos tinham interesse na área — foi essa fase inicial de aprendizado que deu base para o desenvolvimento do sistema. Para os testes do site, contaram com a ajuda de um conhecido do grupo, que ajudou a identificar falhas e pontos de melhoria antes do lançamento.
